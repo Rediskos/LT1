@@ -1,0 +1,42 @@
+(defun УДАЛИТЬ (target set)
+  ((lambda (f-set cdr-set)
+     (cond
+       ((null set) NIL)
+       ((equal target f-set) (УДАЛИТЬ target cdr-set))
+       (t (cons f-set (УДАЛИТЬ target cdr-set)))))
+   (first set) (cdr set))
+  )
+
+(defun ЕЛЕМЕНТ-В-МНОЖЕСТВЕ (target *array*)
+  (cond
+    ((null *array*) NIL)    
+    ((equal target (car *array*)) T)    
+    (t (ЕЛЕМЕНТ-В-МНОЖЕСТВЕ target (cdr *array*)))
+    ))
+
+(defun РАЗНОСТЬ (set1 set2)
+  ((lambda (f-set1 cdr-set1 del-fset1-in-set2)
+     (cond
+       ((null set1) NIL)
+       ((ЕЛЕМЕНТ-В-МНОЖЕСТВЕ f-set1 set2)
+        (РАЗНОСТЬ cdr-set1 del-fset1-in-set2))
+       (t (cons f-set1 (РАЗНОСТЬ cdr-set1 del-fset1-in-set2)))))
+   (first set1) (cdr set1) (УДАЛИТЬ (first set1) set2))
+  )
+
+(РАЗНОСТЬ '(1 2 3) '(2 3 4))
+
+(terpri)
+(princ "Никулин - задание 40")
+(terpri)
+(princ "Тест 1, set1=(1 2 3), set2=(1 2 3 4): ")
+(princ (РАЗНОСТЬ '(1 2 3) '(1 2 3 4)))
+(terpri)
+(princ "Тест 2, set1=(1 2 3), set2=(4 3 2 1): ")
+(princ (РАЗНОСТЬ '(1 2 3) '(4 3 2 1)))
+(terpri)
+(princ "Тест 4, set1=(1 2 3 4 5), set2=(2 3 4): ")
+(princ (РАЗНОСТЬ '(1 2 3 4 5) '(2 3 4)))
+(terpri)
+(princ "Тест 5, set1=(1 2 3), set2=(2 3 4): ")
+(princ (РАЗНОСТЬ '(1 2 3) '(2 3 4)))
