@@ -25,23 +25,23 @@
 
 ;;задание 13
 
-(defun check-for-reps (target *array*)
+(defun check-for-reps (target array)
   (cond
     ;;если не осталось елементов то вернуть NIL
-    ((null *array*) NIL)
+    ((null array) NIL)
     ;;если голова массива совпала с целью вернуть T
-    ((equal target (car *array*)) T)
+    ((equal target (car array)) T)
     ;;если голова массива не совпала с целью то продолжить с хвостом
-    (t (check-for-reps target (cdr *array*)))
+    (t (check-for-reps target (cdr array)))
     ))
 
-(defun remove-reps (*array*)
+(defun remove-reps (array)
   ((lambda (car-ar cdr-ar)
      (cond
-       ((null cdr-ar) *array*)
+       ((null cdr-ar) array)
        ((equal (check-for-reps car-ar cdr-ar) NIL) (cons car-ar (remove-reps cdr-ar)))
        (t (remove-reps cdr-ar))))
-   (car *array*) (cdr *array*)
+   (car array) (cdr array)
    )
   )
 
@@ -65,24 +65,24 @@
 
 ;;задание 21
 
-(defun check-for-reps (target *array*)
+(defun check-for-reps (target array)
   (cond
     ;;если не осталось елементов то вернуть NIL
-    ((null *array*) NIL)
+    ((null array) NIL)
     ;;если голова массива совпала с целью вернуть T
-    ((equal target (car *array*)) T)
+    ((equal target (car array)) T)
     ;;если голова массива не совпала с целью то продолжить с хвостом
-    (t (check-for-reps target (cdr *array*)))
+    (t (check-for-reps target (cdr array)))
     ))
 
 
-(defun del-first-occur (*array* &optional (*trace* NIL))
+(defun del-first-occur (array &optional (trace NIL))
   ((lambda (car-ar cdr-ar)
      (cond
-       ((null *array*) NIL)
-       ((check-for-reps car-ar *trace*) (cons car-ar (del-first-occur cdr-ar *trace*)))
-       (t (del-first-occur cdr-ar (cons car-ar *trace*)))))
-   (car *array*) (cdr *array*)
+       ((null array) NIL)
+       ((check-for-reps car-ar trace) (cons car-ar (del-first-occur cdr-ar trace)))
+       (t (del-first-occur cdr-ar (cons car-ar trace)))))
+   (car array) (cdr array)
    )
   )
 
@@ -102,25 +102,25 @@
 
 ;;задание 24
 
-(defun reverse-cdr (*list*)
+(defun reverse-cdr (list)
   ((lambda (cdr-list)
      (cond
        ((null cdr-list) NIL)
-       (t (cons (car *list*) (reverse-cdr cdr-list)))))
-   (cdr *list*)
+       (t (cons (car list) (reverse-cdr cdr-list)))))
+   (cdr list)
    ))
 
-(defun flat-list-to-hight-list (*list*)
-  (cond ((null (cdr *list*))  *list*)
-   (t (cons (flat-list-to-hight-list (reverse-cdr *list*)) (last *list*))))
+(defun flat-list-to-hight-list (list)
+  (cond ((null (cdr list))  list)
+   (t (cons (flat-list-to-hight-list (reverse-cdr list)) (last list))))
   )
 
-(defun hight-list-to-flat-list (*list*)
+(defun hight-list-to-flat-list (list)
   ((lambda (cadar-list caar-list cdr-list)
      (cond
        ((null cadar-list) (cons caar-list cdr-list))
        (t (hight-list-to-flat-list (cons caar-list (cons cadar-list cdr-list))))))
-   (cadar *list*) (caar *list*) (cdr *list*)
+   (cadar list) (caar list) (cdr list)
    )
   )
 
@@ -145,28 +145,28 @@
 
 ;;задание 25
 
-(defun *abs* (x) (if (< x 0) (- x) x))
+(defun *abs (x) (if (< x 0) (- x) x))
 
 ;;т.к. не уверен, можно ли использовать встроенный mod
 ;;пишу свой
-(defun *mod* (x y)
+(defun *mod (x y)
   ((lambda (abs-x abs-y)
      (cond
        ((= (- abs-x abs-y) 0) 0)
-       ((< (- abs-x abs-y) 0) (if (< (* x y) 0) (- x) x))
-       (t (*mod* (- x (if (< x 0) (- abs-y) abs-y)) y)))
+       ((< (- abs-x abs-y) 0) (if (< (x y) 0) (- x) x))
+       (t (*mod (- x (if (< x 0) (- abs-y) abs-y)) y)))
      )
-   (*abs* x) (*abs* y)
+   (*abs x) (*abs y)
    )
   )
  
 (defun is-even (x)
   (cond
-    ((= 0 (*mod* x 2)) T)
+    ((= 0 (*mod x 2)) T)
     (t NIL))
   )
 
-(defun kill-all-even-nums (*list*)
+(defun kill-all-even-nums (list)
   ((lambda (car-list cdr-list)
     (if car-list
       (cond
@@ -174,7 +174,7 @@
         (t (cons car-list (kill-all-even-nums cdr-list))))
       )
      )
-   (car *list*) (cdr *list*)
+   (car list) (cdr list)
    )
   )
 
@@ -195,12 +195,12 @@
 
 ;;задание 30
 
-(defun ВЫЧИСЛИ (*expr*)
+(defun ВЫЧИСЛИ (expr)
   (cond
-    ((null *expr*) nil)
-    ((atom  *expr*) *expr*)
-    (t (eval (cons (second *expr*) (cons (ВЫЧИСЛИ (first *expr*))
-                                (list (ВЫЧИСЛИ (third *expr*))))))))
+    ((null expr) nil)
+    ((atom  expr) expr)
+    (t (eval (cons (second expr) (cons (ВЫЧИСЛИ (first expr))
+                                (list (ВЫЧИСЛИ (third expr))))))))
   )
 
 (ВЫЧИСЛИ '((-2 + 4) * 3))
@@ -271,11 +271,11 @@
    (first set) (cdr set))
   )
 
-(defun ЕЛЕМЕНТ-В-МНОЖЕСТВЕ (target *array*)
+(defun ЕЛЕМЕНТ-В-МНОЖЕСТВЕ (target array)
   (cond
-    ((null *array*) NIL)    
-    ((equal target (car *array*)) T)    
-    (t (ЕЛЕМЕНТ-В-МНОЖЕСТВЕ target (cdr *array*)))
+    ((null array) NIL)    
+    ((equal target (car array)) T)    
+    (t (ЕЛЕМЕНТ-В-МНОЖЕСТВЕ target (cdr array)))
     ))
 
 (defun СИММЕТРИЧЕСКАЯ-РАЗНОСТЬ (set1 set2)
@@ -320,11 +320,11 @@
    (first set) (cdr set))
   )
 
-(defun ЕЛЕМЕНТ-В-МНОЖЕСТВЕ (target *array*)
+(defun ЕЛЕМЕНТ-В-МНОЖЕСТВЕ (target array)
   (cond
-    ((null *array*) NIL)    
-    ((equal target (car *array*)) T)    
-    (t (ЕЛЕМЕНТ-В-МНОЖЕСТВЕ target (cdr *array*)))
+    ((null array) NIL)    
+    ((equal target (car array)) T)    
+    (t (ЕЛЕМЕНТ-В-МНОЖЕСТВЕ target (cdr array)))
     ))
 
 (defun РАЗНОСТЬ (set1 set2)
