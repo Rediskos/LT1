@@ -145,28 +145,28 @@
 
 ;;задание 25
 
-(defun *abs (x) (if (< x 0) (- x) x))
+(defun *abs* (x) (if (< x 0) (- x) x))
 
 ;;т.к. не уверен, можно ли использовать встроенный mod
 ;;пишу свой
-(defun *mod (x y)
+(defun *mod* (x y)
   ((lambda (abs-x abs-y)
      (cond
        ((= (- abs-x abs-y) 0) 0)
-       ((< (- abs-x abs-y) 0) (if (< (x y) 0) (- x) x))
-       (t (*mod (- x (if (< x 0) (- abs-y) abs-y)) y)))
+       ((< (- abs-x abs-y) 0) (if (< (* x y) 0) (- x) x))
+       (t (*mod* (- x (if (< x 0) (- abs-y) abs-y)) y)))
      )
-   (*abs x) (*abs y)
+   (*abs* x) (*abs* y)
    )
   )
  
 (defun is-even (x)
   (cond
-    ((= 0 (*mod x 2)) T)
+    ((= 0 (*mod* x 2)) T)
     (t NIL))
   )
 
-(defun kill-all-even-nums (list)
+(defun kill-all-even-nums (*list*)
   ((lambda (car-list cdr-list)
     (if car-list
       (cond
@@ -174,9 +174,10 @@
         (t (cons car-list (kill-all-even-nums cdr-list))))
       )
      )
-   (car list) (cdr list)
+   (car *list*) (cdr *list*)
    )
   )
+
 
 
 (terpri)
